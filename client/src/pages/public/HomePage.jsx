@@ -7,6 +7,9 @@ import {
  CreditCard,
  Star,
  ChevronRight,
+ House,
+ Building,
+ TentTree,
 } from "lucide-react";
 import PropertyCard from "../../components/PropertyCard";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -19,9 +22,17 @@ const HERO_IMAGE =
  "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1600&q=80";
 
 const PROPERTY_TYPES = [
- { label: "House", icon: "🏠", value: "House" },
- { label: "Apartment", icon: "🏢", value: "Apartment" },
- { label: "Villa", icon: "🏡", value: "Villa" },
+ { label: "House", icon: <House size={30} color="#002F34" />, value: "House" },
+ {
+  label: "Apartment",
+  icon: <Building size={30} color="#002F34" />,
+  value: "Apartment",
+ },
+ {
+  label: "Villa",
+  icon: <TentTree size={30} color="#002F34" />,
+  value: "Villa",
+ },
 ];
 
 const HomePage = () => {
