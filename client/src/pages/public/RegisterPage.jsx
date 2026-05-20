@@ -66,14 +66,13 @@ const RegisterPage = () => {
 
  return (
   <div className="min-h-screen flex">
-   {/* Left — image panel */}
    <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
     <img
      src={BG_IMAGE}
      alt="Property"
      className="absolute inset-0 w-full h-full object-cover"
     />
-    <div className="absolute inset-0 bg-gradient-to-t from-[#002F34]/80 via-[#002F34]/30 to-transparent" />
+    <div className="absolute inset-0 bg-linear-to-t from-[#002F34]/80 via-[#002F34]/30 to-transparent" />
     <div className="relative z-10 flex flex-col justify-end p-12 text-white">
      <div className="mb-4">
       <span className="text-3xl font-bold">
@@ -93,10 +92,8 @@ const RegisterPage = () => {
     </div>
    </div>
 
-   {/* Right — form panel */}
    <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-white overflow-y-auto">
     <div className="w-full max-w-md">
-     {/* Mobile logo */}
      <div className="lg:hidden mb-8 text-center">
       <span className="text-2xl font-bold">
        <span style={{ color: "#002F34" }}>House</span>
@@ -111,7 +108,6 @@ const RegisterPage = () => {
       Enter your details below to get started.
      </p>
 
-     {/* Role selection */}
      <div className="mb-6">
       <p className="text-sm font-medium text-gray-700 mb-3">
        I am looking to...
@@ -139,7 +135,6 @@ const RegisterPage = () => {
      </div>
 
      <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Full name */}
       <div>
        <label className="block text-sm font-medium text-gray-700 mb-1.5">
         Full Name
@@ -162,7 +157,6 @@ const RegisterPage = () => {
        )}
       </div>
 
-      {/* Email */}
       <div>
        <label className="block text-sm font-medium text-gray-700 mb-1.5">
         Email address
@@ -185,7 +179,6 @@ const RegisterPage = () => {
        )}
       </div>
 
-      {/* Password */}
       <div>
        <label className="block text-sm font-medium text-gray-700 mb-1.5">
         Password

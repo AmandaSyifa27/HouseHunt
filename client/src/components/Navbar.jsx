@@ -39,10 +39,16 @@ const Navbar = () => {
   return "/";
  };
 
+ const getProfileLink = () => {
+  if (user?.role === "admin") return "/admin/settings";
+  if (user?.role === "landlord") return "/landlord/profile";
+  if (user?.role === "tenant") return "/tenant/profile";
+  return "/";
+ };
+
  return (
   <nav className="bg-white border-b border-gray-100 sticky top-0 z-40">
    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-    {/* Logo */}
     <Link to="/" className="flex items-center">
      <span className="text-2xl font-bold">
       <span style={{ color: "#002F34" }}>House</span>
@@ -50,7 +56,6 @@ const Navbar = () => {
      </span>
     </Link>
 
-    {/* Right side */}
     {user ? (
      <div className="relative" ref={dropdownRef}>
       <button
@@ -108,12 +113,12 @@ const Navbar = () => {
          </>
         )}
         <Link
-         to="/profile"
+         to={getProfileLink()}
          onClick={() => setDropdownOpen(false)}
          className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
         >
          <User size={16} />
-         Profile
+         {user?.role === "admin" ? "Account Settings" : "Profile"}
         </Link>
         <hr className="my-1 border-gray-100" />
         <button

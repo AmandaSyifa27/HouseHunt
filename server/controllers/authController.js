@@ -133,3 +133,32 @@ exports.updatePassword = async (req, res) => {
   res.status(500).json({ message: err.message });
  }
 };
+
+// GET /api/auth/landlord/:id — public landlord profile
+exports.getLandlordProfile = async (req, res) => {
+  try {
+    const landlord = await User.findById(req.params.id)
+      .select('name email contactNumber profileImage createdAt subscriptionStatus role');
+
+    if (!landlord || landlord.role !== 'landlord') {
+      return res.status(404).json({ message: 'Landlord not found' });
+    }
+
+    const Property = require('../models/Property');
+    const properties = await Property.find({
+      landlordId: req.params.id,
+      status: 'available',
+    })
+      .sort({ isRecommended: -1, createdAt: -1 })
+      .limit(12);
+
+    const totalListings = await Property.countDocuments({
+      landlordId: req.params.id,
+      status: { $in: ['available', 'booked'] },
+    });
+
+    res.json({ landlord, properties, totalListings });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

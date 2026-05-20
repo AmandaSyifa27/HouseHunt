@@ -28,9 +28,6 @@ const LandlordOrders = () => {
   }
  }, [toast]);
 
- //  useEffect(() => {
- //   fetchOrders();
- //  }, [fetchOrders]);
  useEffect(() => {
   const timer = setTimeout(() => {
    fetchOrders();
@@ -84,7 +81,6 @@ const LandlordOrders = () => {
        className="bg-white rounded-2xl border border-gray-100 p-5"
       >
        <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-        {/* Property image */}
         <div className="w-full sm:w-24 h-20 rounded-xl overflow-hidden shrink-0 bg-gray-100">
          <img
           src={
@@ -96,7 +92,6 @@ const LandlordOrders = () => {
          />
         </div>
 
-        {/* Info */}
         <div className="flex-1 min-w-0">
          <div className="flex items-start justify-between gap-2 flex-wrap">
           <div>
@@ -147,7 +142,6 @@ const LandlordOrders = () => {
           </div>
          </div>
 
-         {/* Proof + Actions */}
          <div className="flex items-center gap-3 mt-4 flex-wrap">
           {order.proofOfPaymentImage && (
            <button

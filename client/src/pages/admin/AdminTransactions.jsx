@@ -36,9 +36,6 @@ const AdminTransactions = () => {
   [filter, toast],
  );
 
- //  useEffect(() => {
- //   fetchData(1);
- //  }, [filter]);
  useEffect(() => {
   const timer = setTimeout(() => {
    fetchData(1);
@@ -68,7 +65,6 @@ const AdminTransactions = () => {
     </div>
    </div>
 
-   {/* Filters */}
    <div className="bg-white rounded-2xl border border-gray-100 p-4 mb-5 flex flex-wrap gap-3">
     <select
      value={filter.status}
@@ -146,7 +142,7 @@ const AdminTransactions = () => {
              : "LISTING FEE"}
            </span>
           </td>
-          <td className="px-4 py-3 text-gray-600 max-w-[120px] truncate">
+          <td className="px-4 py-3 text-gray-600 max-w-30 truncate">
            {t.propertyId?.title || "—"}
           </td>
           <td className="px-4 py-3 font-medium text-gray-800">
@@ -216,7 +212,6 @@ const AdminTransactions = () => {
     </div>
    </div>
 
-   {/* Proof image modal */}
    {proofModal && (
     <div
      className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"

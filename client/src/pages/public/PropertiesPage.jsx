@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SlidersHorizontal, X, RotateCcw } from "lucide-react";
 import api from "../../utils/axios";
@@ -25,8 +25,6 @@ const Sidebar = ({
  resetFilters,
  inputValues,
  setInputValues,
- // applyNumericFilters,
- //  handleInputKeyDown,
  filters,
  toggleMultiFilter,
  setFilters,
@@ -70,7 +68,6 @@ const Sidebar = ({
     </div>
    </div>
 
-   {/* Property Type */}
    <div className="mb-5">
     <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-3">
      Property Type
@@ -91,7 +88,6 @@ const Sidebar = ({
     ))}
    </div>
 
-   {/* Ad Type */}
    <div className="mb-5">
     <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-3">
      Ad Type
@@ -112,7 +108,6 @@ const Sidebar = ({
     ))}
    </div>
 
-   {/* Bedrooms */}
    <div className="mb-5">
     <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-3">
      Bedrooms
@@ -135,7 +130,6 @@ const Sidebar = ({
     </div>
    </div>
 
-   {/* Building Area */}
    <div className="mb-5">
     <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-3">
      Building Area (m²)
@@ -227,8 +221,12 @@ const PropertiesPage = () => {
 
  const cityQuery = searchParams.get("city") || "";
 
+ const inFlightRef = useRef(false);
+
  const fetchProperties = useCallback(
   async (page = 1) => {
+   if (inFlightRef.current) return;
+   inFlightRef.current = true;
    setLoading(true);
    try {
     const params = { page, limit: 9 };
@@ -252,17 +250,14 @@ const PropertiesPage = () => {
     toast({ message: "Failed to load properties", type: "error" });
    } finally {
     setLoading(false);
+    inFlightRef.current = false;
    }
   },
   [filters, cityQuery, toast],
  );
 
  useEffect(() => {
-  const timer = setTimeout(() => {
-   fetchProperties(1);
-  }, 0);
-
-  return () => clearTimeout(timer);
+  queueMicrotask(() => fetchProperties(1));
  }, [fetchProperties]);
 
  useEffect(() => {
@@ -307,7 +302,6 @@ const PropertiesPage = () => {
   <PublicLayout>
    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div className="flex flex-col lg:flex-row gap-6">
-     {/* Desktop Sidebar */}
      <div className="hidden lg:block">
       <Sidebar
        resetFilters={resetFilters}
@@ -321,9 +315,7 @@ const PropertiesPage = () => {
       />
      </div>
 
-     {/* Main content */}
      <div className="flex-1 min-w-0">
-      {/* Header */}
       <div className="flex items-start justify-between mb-5">
        <div>
         <h1 className="text-2xl font-bold text-gray-900">
@@ -334,7 +326,6 @@ const PropertiesPage = () => {
         </p>
        </div>
 
-       {/* Mobile filter button */}
        <button
         onClick={() => setFiltersOpen(true)}
         className="lg:hidden flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-700"
@@ -343,7 +334,6 @@ const PropertiesPage = () => {
        </button>
       </div>
 
-      {/* Grid */}
       {loading ? (
        <div className="flex justify-center py-20">
         <LoadingSpinner size="lg" />
@@ -377,7 +367,6 @@ const PropertiesPage = () => {
     </div>
    </div>
 
-   {/* Mobile filter drawer */}
    {filtersOpen && (
     <div className="fixed inset-0 z-50 lg:hidden">
      <div

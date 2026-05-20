@@ -113,7 +113,6 @@ const LandlordDashboard = () => {
    </div>
 
    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-    {/* Recent orders */}
     <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 p-5">
      <div className="flex items-center justify-between mb-4">
       <h2 className="font-semibold text-gray-900">Incoming Booking Requests</h2>
@@ -171,7 +170,6 @@ const LandlordDashboard = () => {
      )}
     </div>
 
-    {/* Subscription + quota */}
     <div className="space-y-4">
      <div
       className="rounded-2xl p-5 text-white"

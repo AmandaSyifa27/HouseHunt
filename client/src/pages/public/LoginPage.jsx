@@ -57,7 +57,6 @@ const LoginPage = () => {
 
  return (
   <div className="min-h-screen flex items-center justify-center bg-[#EBEEEF] px-4 relative overflow-hidden">
-   {/* Blurred bg cards */}
    <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-20 blur-sm">
     <div className="grid grid-cols-3 gap-4 w-full max-w-3xl px-8">
      {[...Array(6)].map((_, i) => (
@@ -67,7 +66,6 @@ const LoginPage = () => {
    </div>
 
    <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-8 relative z-10">
-    {/* Logo */}
     <div className="text-center mb-6">
      <span className="text-2xl font-bold">
       <span style={{ color: "#002F34" }}>House</span>
@@ -80,7 +78,6 @@ const LoginPage = () => {
     </div>
 
     <form onSubmit={handleSubmit} className="space-y-4">
-     {/* Email */}
      <div>
       <label className="block text-sm font-medium text-gray-700 mb-1.5">
        Email address
@@ -106,7 +103,6 @@ const LoginPage = () => {
       )}
      </div>
 
-     {/* Password */}
      <div>
       <label className="block text-sm font-medium text-gray-700 mb-1.5">
        Password

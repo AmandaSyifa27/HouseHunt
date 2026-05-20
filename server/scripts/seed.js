@@ -41,7 +41,7 @@ const seed = async () => {
 
  const [admin, landlord1, landlord2, tenant1, tenant2] = await User.insertMany([
   {
-   name: "Alex Rivera",
+   name: "Amanda Sifa",
    email: "admin@househunt.com",
    password: await bcrypt.hash("Admin123!", 12),
    role: "admin",

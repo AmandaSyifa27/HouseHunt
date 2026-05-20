@@ -5,7 +5,6 @@ import api from "../../utils/axios";
 import PublicLayout from "../../components/PublicLayout";
 import PropertyCard from "../../components/PropertyCard";
 import LoadingSpinner from "../../components/LoadingSpinner";
-// import { useToast } from "../../components/Toast";
 import { useToast } from "../../hooks/useToast";
 
 const FavoritesPage = () => {
@@ -27,7 +26,6 @@ const FavoritesPage = () => {
   }
  }, [toast]);
 
- // useEffect(() => { fetchFavorites(); }, [fetchFavorites]);
  useEffect(() => {
   const timer = setTimeout(() => {
    fetchFavorites();

@@ -3,9 +3,7 @@ import { ChevronLeft, Camera, Save, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/axios";
 import PublicLayout from "../../components/PublicLayout";
-// import { useAuth } from '../../contexts/AuthContext';
 import { useAuth } from "../../hooks/useAuth";
-// import { useToast } from "../../components/Toast";
 import { useToast } from "../../hooks/useToast";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { getInitials } from "../../utils/helpers";
@@ -108,7 +106,6 @@ const TenantProfile = () => {
      </div>
     </div>
 
-    {/* Profile info */}
     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-5">
      <div className="flex items-center gap-5 mb-6">
       <div className="relative">
@@ -197,7 +194,6 @@ const TenantProfile = () => {
      </button>
     </div>
 
-    {/* Change password */}
     <div className="bg-white rounded-2xl border border-gray-100 p-6">
      <div className="flex items-center gap-2 mb-5">
       <Lock size={18} className="text-gray-500" />

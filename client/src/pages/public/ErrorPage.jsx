@@ -9,7 +9,6 @@ const ErrorPage = ({ type = "notfound" }) => {
 
  return (
   <div className="min-h-screen flex flex-col bg-white">
-   {/* Minimal Navbar */}
    <nav className="border-b border-gray-100 px-6 h-16 flex items-center">
     <span className="text-2xl font-bold">
      <span style={{ color: "#002F34" }}>House</span>
@@ -19,7 +18,6 @@ const ErrorPage = ({ type = "notfound" }) => {
 
    <div className="flex-1 flex items-center justify-center px-4">
     <div className="text-center max-w-md">
-     {/* Illustration */}
      <div
       className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6"
       style={{ backgroundColor: "#EBEEEF" }}
@@ -31,7 +29,6 @@ const ErrorPage = ({ type = "notfound" }) => {
       )}
      </div>
 
-     {/* Error code */}
      <h1 className="text-8xl font-bold mb-2" style={{ color: "#EBEEEF" }}>
       {is404 ? "404" : "500"}
      </h1>

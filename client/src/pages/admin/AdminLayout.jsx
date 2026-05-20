@@ -6,6 +6,8 @@ import {
  Users,
  LogOut,
  Menu,
+ Flag,
+ Settings,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
@@ -15,6 +17,8 @@ const NAV_ITEMS = [
  { to: "/admin/transactions", Icon: CreditCard, label: "Transactions" },
  { to: "/admin/properties", Icon: Building2, label: "Properties" },
  { to: "/admin/users", Icon: Users, label: "Users" },
+ { to: "/admin/reports", Icon: Flag, label: "Reports" },
+ { to: "/admin/settings", Icon: Settings, label: "Settings" },
 ];
 
 const SidebarContent = ({ user, setMobileOpen, handleLogout }) => (
@@ -76,7 +80,6 @@ const AdminLayout = ({ children }) => {
 
  return (
   <div className="flex h-screen bg-[#EBEEEF] overflow-hidden">
-   {/* Desktop sidebar */}
    <aside
     className="hidden lg:flex flex-col w-48 shrink-0"
     style={{ backgroundColor: "#002F34" }}
@@ -88,7 +91,6 @@ const AdminLayout = ({ children }) => {
     />
    </aside>
 
-   {/* Mobile sidebar */}
    {mobileOpen && (
     <div className="fixed inset-0 z-50 lg:hidden">
      <div
@@ -108,9 +110,7 @@ const AdminLayout = ({ children }) => {
     </div>
    )}
 
-   {/* Main */}
    <div className="flex-1 flex flex-col overflow-hidden">
-    {/* Top bar */}
     <header className="bg-white border-b border-gray-100 h-14 flex items-center justify-between px-5 shrink-0">
      <button className="lg:hidden" onClick={() => setMobileOpen(true)}>
       <Menu size={20} className="text-gray-600" />

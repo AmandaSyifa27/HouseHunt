@@ -254,7 +254,6 @@ const EditPropertyPage = () => {
       />
      </Field>
 
-     {/* Amenities */}
      <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
        Amenities
@@ -310,7 +309,6 @@ const EditPropertyPage = () => {
       )}
      </div>
 
-     {/* Images */}
      <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
        Photos

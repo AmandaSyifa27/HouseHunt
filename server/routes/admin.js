@@ -10,6 +10,10 @@ const {
  getAllUsers,
  updateUserStatus,
 } = require("../controllers/adminController");
+const {
+ getAllReports,
+ updateReportStatus,
+} = require("../controllers/reportController");
 const { protect, authorize } = require("../middleware/auth");
 
 router.use(protect, authorize("admin"));
@@ -22,5 +26,7 @@ router.put("/properties/:id", updatePropertyStatus);
 router.delete("/properties/:id", deleteProperty);
 router.get("/users", getAllUsers);
 router.put("/users/:id", updateUserStatus);
+router.get("/reports", getAllReports);
+router.put("/reports/:id", updateReportStatus);
 
 module.exports = router;

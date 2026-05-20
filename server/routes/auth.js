@@ -6,6 +6,7 @@ const {
  getMe,
  updateProfile,
  updatePassword,
+ getLandlordProfile,
 } = require("../controllers/authController");
 const { protect } = require("../middleware/auth");
 const { uploadProfileImage } = require("../middleware/upload");
@@ -15,5 +16,6 @@ router.post("/login", login);
 router.get("/me", protect, getMe);
 router.put("/profile", protect, uploadProfileImage, updateProfile);
 router.put("/password", protect, updatePassword);
+router.get("/landlord/:id", getLandlordProfile);
 
 module.exports = router;

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Camera, Save, Lock } from "lucide-react";
 import api from "../../utils/axios";
-import LandlordLayout from "./LandlordLayout";
+import AdminLayout from "./AdminLayout";
 import { useAuth } from "../../hooks/useAuth";
 import { useToast } from "../../hooks/useToast";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { getInitials } from "../../utils/helpers";
 
-const LandlordProfile = () => {
+const AdminSettings = () => {
  const { user, updateUser } = useAuth();
  const toast = useToast();
 
@@ -15,24 +15,30 @@ const LandlordProfile = () => {
   name: user?.name || "",
   contactNumber: user?.contactNumber || "",
  });
+ const [profileImage, setProfileImage] = useState(null);
+ const [previewUrl, setPreviewUrl] = useState(user?.profileImage || "");
  const [passwords, setPasswords] = useState({
   currentPassword: "",
   newPassword: "",
   confirmPassword: "",
  });
- const [profileImage, setProfileImage] = useState(null);
- const [previewUrl, setPreviewUrl] = useState(user?.profileImage || "");
  const [savingProfile, setSavingProfile] = useState(false);
  const [savingPassword, setSavingPassword] = useState(false);
 
  const handleImageChange = (e) => {
   const file = e.target.files[0];
   if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+   toast({ message: "Image too large. Max 2MB.", type: "error" });
+   return;
+  }
   setProfileImage(file);
   setPreviewUrl(URL.createObjectURL(file));
  };
 
  const handleSaveProfile = async () => {
+  if (!form.name.trim())
+   return toast({ message: "Name is required", type: "error" });
   setSavingProfile(true);
   try {
    const fd = new FormData();
@@ -43,7 +49,7 @@ const LandlordProfile = () => {
     headers: { "Content-Type": "multipart/form-data" },
    });
    updateUser(data);
-   toast({ message: "Profile updated", type: "success" });
+   toast({ message: "Profile updated successfully", type: "success" });
   } catch (err) {
    toast({
     message: err.response?.data?.message || "Update failed",
@@ -56,7 +62,7 @@ const LandlordProfile = () => {
 
  const handleChangePassword = async () => {
   if (passwords.newPassword !== passwords.confirmPassword) {
-   return toast({ message: "New passwords do not match", type: "error" });
+   return toast({ message: "Passwords do not match", type: "error" });
   }
   if (passwords.newPassword.length < 8) {
    return toast({
@@ -86,22 +92,24 @@ const LandlordProfile = () => {
   "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#002F34] transition-colors";
 
  return (
-  <LandlordLayout>
+  <AdminLayout>
    <div className="max-w-xl">
     <div className="mb-6">
-     <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
+     <h1 className="text-2xl font-bold text-gray-900">Account Settings</h1>
      <p className="text-gray-500 text-sm mt-0.5">
-      Manage your account details.
+      Manage your admin account details.
      </p>
     </div>
 
     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-5">
+     <h2 className="font-semibold text-gray-900 mb-5">Profile Information</h2>
+
      <div className="flex items-center gap-5 mb-6">
       <div className="relative">
        {previewUrl ? (
         <img
          src={previewUrl}
-         alt=""
+         alt="avatar"
          className="w-20 h-20 rounded-full object-cover"
         />
        ) : (
@@ -125,10 +133,8 @@ const LandlordProfile = () => {
       <div>
        <p className="font-semibold text-gray-800">{user?.name}</p>
        <p className="text-sm text-gray-400">{user?.email}</p>
-       <span
-        className={`text-xs px-2 py-0.5 rounded-full font-medium mt-1 inline-block ${user?.subscriptionStatus === "premium" ? "bg-yellow-100 text-yellow-700" : "bg-gray-100 text-gray-500"}`}
-       >
-        {user?.subscriptionStatus === "premium" ? "Premium" : "Free"}
+       <span className="text-xs px-2 py-0.5 rounded-full bg-[#002F34]/10 text-[#002F34] font-medium mt-1 inline-block">
+        Super Admin
        </span>
       </div>
      </div>
@@ -153,17 +159,18 @@ const LandlordProfile = () => {
         disabled
         className={`${inputCls} bg-gray-50 text-gray-400 cursor-not-allowed`}
        />
+       <p className="text-xs text-gray-400 mt-1">Email cannot be changed.</p>
       </div>
       <div>
        <label className="block text-sm font-medium text-gray-700 mb-1.5">
-        Contact Number
+        Contact Number <span className="text-gray-400">(optional)</span>
        </label>
        <input
         value={form.contactNumber}
         onChange={(e) =>
          setForm((f) => ({ ...f, contactNumber: e.target.value }))
         }
-        placeholder="+62..."
+        placeholder="+1..."
         className={inputCls}
        />
       </div>
@@ -172,7 +179,7 @@ const LandlordProfile = () => {
      <button
       onClick={handleSaveProfile}
       disabled={savingProfile}
-      className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold disabled:opacity-70"
+      className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold disabled:opacity-70 transition-opacity"
       style={{ backgroundColor: "#002F34" }}
      >
       {savingProfile ? (
@@ -190,6 +197,7 @@ const LandlordProfile = () => {
       <Lock size={18} className="text-gray-500" />
       <h2 className="font-semibold text-gray-900">Change Password</h2>
      </div>
+
      <div className="space-y-4">
       {[
        { label: "Current Password", key: "currentPassword" },
@@ -212,18 +220,19 @@ const LandlordProfile = () => {
        </div>
       ))}
      </div>
+
      <button
       onClick={handleChangePassword}
       disabled={savingPassword}
-      className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white disabled:opacity-70"
+      className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold disabled:opacity-70 transition-opacity"
       style={{ backgroundColor: "#002F34" }}
      >
       {savingPassword ? <LoadingSpinner size="sm" /> : "Update Password"}
      </button>
     </div>
    </div>
-  </LandlordLayout>
+  </AdminLayout>
  );
 };
 
-export default LandlordProfile;
+export default AdminSettings;

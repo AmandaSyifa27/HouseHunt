@@ -12,7 +12,6 @@ import {
 import api from "../../utils/axios";
 import PublicLayout from "../../components/PublicLayout";
 import LoadingSpinner from "../../components/LoadingSpinner";
-// import { useToast } from "../../components/Toast";
 import { useToast } from "../../hooks/useToast";
 import { formatPrice, PROPERTY_TYPE_COLORS } from "../../utils/helpers";
 
@@ -128,7 +127,6 @@ const CheckoutPage = () => {
  return (
   <PublicLayout>
    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    {/* Back */}
     <button
      onClick={() => navigate(-1)}
      className="flex items-center gap-2 text-gray-500 hover:text-[#002F34] mb-6 transition-colors text-sm font-medium"
@@ -139,9 +137,7 @@ const CheckoutPage = () => {
     <h1 className="text-2xl font-bold text-gray-900 mb-6">Checkout</h1>
 
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-     {/* Left — payment form */}
      <div className="lg:col-span-3 space-y-5">
-      {/* Bank transfer info */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
        <h2 className="font-semibold text-gray-900 mb-4">
         Payment Instructions
@@ -177,7 +173,6 @@ const CheckoutPage = () => {
        </p>
       </div>
 
-      {/* Proof upload */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
        <h2 className="font-semibold text-gray-900 mb-3">
         Upload Payment Proof
@@ -228,7 +223,6 @@ const CheckoutPage = () => {
       </button>
      </div>
 
-     {/* Right — property summary */}
      <div className="lg:col-span-2">
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden sticky top-20">
        <img

@@ -11,9 +11,7 @@ import {
 import api from "../../utils/axios";
 import LandlordLayout from "./LandlordLayout";
 import LoadingSpinner from "../../components/LoadingSpinner";
-// import { useToast } from "../../components/Toast";
 import { useToast } from "../../hooks/useToast";
-// import { useAuth } from "../../contexts/AuthContext";
 import { useAuth } from "../../hooks/useAuth";
 import { formatDate } from "../../utils/helpers";
 
@@ -52,7 +50,6 @@ const LandlordBilling = () => {
   }
  }, [toast]);
 
- // useEffect(() => { fetchData(); }, [fetchData]);
  useEffect(() => {
   const timer = setTimeout(() => {
    fetchData();
@@ -124,7 +121,6 @@ const LandlordBilling = () => {
     </p>
    </div>
 
-   {/* Current status banner */}
    {isPremium && (
     <div className="bg-[#002F34] rounded-2xl p-4 mb-5 flex items-center gap-3">
      <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
@@ -141,11 +137,9 @@ const LandlordBilling = () => {
     </div>
    )}
 
-   {/* Plan cards — hide premium option if already premium */}
    <div
     className={`grid grid-cols-1 ${!isPremium ? "lg:grid-cols-2" : ""} gap-5 mb-6`}
    >
-    {/* Listing fee — always visible */}
     <div
      className={`rounded-2xl p-5 border-2 cursor-pointer transition-all ${selectedPlan === "listing_fee" ? "border-[#00A896] bg-[#00A896]/5" : "border-gray-100 bg-white hover:border-gray-200"} ${pendingProperties.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
      onClick={() =>
@@ -184,7 +178,6 @@ const LandlordBilling = () => {
      )}
     </div>
 
-    {/* Premium — only show if NOT already premium */}
     {!isPremium && (
      <div
       className={`rounded-2xl p-5 border-2 cursor-pointer transition-all ${selectedPlan === "subscription_premium" ? "border-[#3A77FF] bg-[#3A77FF]/5" : "border-gray-100 bg-white hover:border-gray-200"}`}
@@ -221,7 +214,6 @@ const LandlordBilling = () => {
     )}
    </div>
 
-   {/* Payment form */}
    {selectedPlan && (
     <div className="bg-white rounded-2xl border border-gray-100 p-5 mb-6">
      <h2 className="font-semibold text-gray-900 mb-4">
@@ -231,7 +223,6 @@ const LandlordBilling = () => {
        : "Listing Fee ($5)"}
      </h2>
 
-     {/* Bank details */}
      <div className="bg-[#EBEEEF] rounded-xl p-4 mb-4 text-sm">
       <p className="font-semibold text-gray-700 mb-2">Transfer to:</p>
       <div className="space-y-1 text-gray-600">
@@ -257,7 +248,6 @@ const LandlordBilling = () => {
       </div>
      </div>
 
-     {/* Property dropdown for listing fee */}
      {selectedPlan === "listing_fee" && (
       <div className="mb-4">
        <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -278,7 +268,6 @@ const LandlordBilling = () => {
       </div>
      )}
 
-     {/* Proof upload */}
      <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1.5">
        Upload Transfer Receipt
@@ -330,7 +319,6 @@ const LandlordBilling = () => {
     </div>
    )}
 
-   {/* Billing history */}
    <div className="bg-white rounded-2xl border border-gray-100 p-5">
     <h2 className="font-semibold text-gray-900 mb-4">Billing History</h2>
     {loading ? (
@@ -365,7 +353,7 @@ const LandlordBilling = () => {
              : "Listing Fee"}
            </span>
           </td>
-          <td className="py-3 text-gray-600 max-w-[140px] truncate">
+          <td className="py-3 text-gray-600 max-w-35 truncate">
            {t.propertyId?.title || "—"}
           </td>
           <td className="py-3 font-medium">${t.amount}</td>

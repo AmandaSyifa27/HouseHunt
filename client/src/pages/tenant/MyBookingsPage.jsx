@@ -1,10 +1,16 @@
 import { useEffect, useState, useCallback } from "react";
-import { ChevronLeft, BookOpen, ExternalLink, MapPin } from "lucide-react";
+import {
+ ChevronLeft,
+ BookOpen,
+ ExternalLink,
+ MapPin,
+ Flag,
+ AlertTriangle,
+} from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../utils/axios";
 import PublicLayout from "../../components/PublicLayout";
 import LoadingSpinner from "../../components/LoadingSpinner";
-// import { useToast } from "../../components/Toast";
 import { useToast } from "../../hooks/useToast";
 import {
  formatPrice,
@@ -21,6 +27,14 @@ const STATUS_CONFIG = {
  rejected: { label: "Rejected", cls: "bg-red-100 text-red-700" },
 };
 
+const REPORT_REASONS = [
+ { value: "fraud", label: "Fraud / Fake listing" },
+ { value: "scam", label: "Scam attempt" },
+ { value: "wrong_information", label: "Wrong or misleading information" },
+ { value: "inappropriate_content", label: "Inappropriate content" },
+ { value: "other", label: "Other" },
+];
+
 const MyBookingsPage = () => {
  const navigate = useNavigate();
  const toast = useToast();
@@ -28,18 +42,34 @@ const MyBookingsPage = () => {
  const [loading, setLoading] = useState(true);
  const [proofModal, setProofModal] = useState(null);
 
+ const [reportModal, setReportModal] = useState(null);
+ const [reportForm, setReportForm] = useState({ reason: "", description: "" });
+ const [reportLoading, setReportLoading] = useState(false);
+ const [reportedIds, setReportedIds] = useState(new Set());
  const fetchBookings = useCallback(async () => {
   try {
    const { data } = await api.get("/transactions/tenant/bookings");
    setBookings(data);
+   // check which properties have already been reported
+   const approved = data.filter(
+    (b) => b.status === "approved" && b.propertyId?._id,
+   );
+   const checks = await Promise.allSettled(
+    approved.map((b) => api.get(`/reports/check/${b.propertyId._id}`)),
+   );
+   const alreadyReported = new Set();
+   checks.forEach((result, i) => {
+    if (result.status === "fulfilled" && result.value.data.hasReported) {
+     alreadyReported.add(approved[i].propertyId._id);
+    }
+   });
+   setReportedIds(alreadyReported);
   } catch {
    toast({ message: "Failed to load bookings", type: "error" });
   } finally {
    setLoading(false);
   }
  }, [toast]);
-
- // useEffect(() => { fetchBookings(); }, [fetchBookings]);
 
  useEffect(() => {
   const timer = setTimeout(() => {
@@ -48,6 +78,29 @@ const MyBookingsPage = () => {
 
   return () => clearTimeout(timer);
  }, [fetchBookings]);
+
+ const handleReport = async () => {
+  if (!reportForm.reason)
+   return toast({ message: "Please select a reason", type: "error" });
+  setReportLoading(true);
+  try {
+   await api.post(`/reports/${reportModal.propertyId._id}`, reportForm);
+   toast({
+    message: "Report submitted. Our team will review it.",
+    type: "success",
+   });
+   setReportedIds((prev) => new Set([...prev, reportModal.propertyId._id]));
+   setReportModal(null);
+   setReportForm({ reason: "", description: "" });
+  } catch (err) {
+   toast({
+    message: err.response?.data?.message || "Failed to submit report",
+    type: "error",
+   });
+  } finally {
+   setReportLoading(false);
+  }
+ };
 
  return (
   <PublicLayout>
@@ -105,7 +158,6 @@ const MyBookingsPage = () => {
          className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
         >
          <div className="flex gap-4 p-4">
-          {/* Property image */}
           <div className="w-24 h-20 rounded-xl overflow-hidden shrink-0 bg-gray-100">
            {property?.images?.[0] && (
             <img
@@ -116,7 +168,6 @@ const MyBookingsPage = () => {
            )}
           </div>
 
-          {/* Info */}
           <div className="flex-1 min-w-0">
            <div className="flex items-start justify-between gap-2 flex-wrap">
             <div className="min-w-0">
@@ -172,7 +223,6 @@ const MyBookingsPage = () => {
           </div>
          </div>
 
-         {/* Bottom action bar */}
          <div className="border-t border-gray-50 px-4 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-1 text-xs text-gray-400">
            Landlord:{" "}
@@ -188,6 +238,24 @@ const MyBookingsPage = () => {
             <ExternalLink size={12} /> View your receipt
            </button>
           )}
+          {booking.status === "approved" && booking.propertyId?._id && (
+           <button
+            onClick={() =>
+             reportedIds.has(booking.propertyId._id)
+              ? null
+              : setReportModal(booking)
+            }
+            disabled={reportedIds.has(booking.propertyId._id)}
+            className={`flex items-center gap-1 text-xs font-medium transition-colors ${
+             reportedIds.has(booking.propertyId._id)
+              ? "text-gray-400 cursor-not-allowed"
+              : "text-red-500 hover:text-red-600"
+            }`}
+           >
+            <Flag size={12} />
+            {reportedIds.has(booking.propertyId._id) ? "Reported" : "Report"}
+           </button>
+          )}
          </div>
         </div>
        );
@@ -196,7 +264,6 @@ const MyBookingsPage = () => {
     )}
    </div>
 
-   {/* Proof modal */}
    {proofModal && (
     <div
      className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
@@ -220,6 +287,84 @@ const MyBookingsPage = () => {
       >
        Close
       </button>
+     </div>
+    </div>
+   )}
+   {reportModal && (
+    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+     <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl">
+      <div className="flex items-center gap-3 mb-5">
+       <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+        <AlertTriangle size={20} className="text-red-500" />
+       </div>
+       <div>
+        <h3 className="font-bold text-gray-900">Report this property</h3>
+        <p className="text-xs text-gray-400 mt-0.5 truncate max-w-xs">
+         {reportModal.propertyId?.title}
+        </p>
+       </div>
+      </div>
+
+      <div className="space-y-4">
+       <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+         Reason
+        </label>
+        <select
+         value={reportForm.reason}
+         onChange={(e) =>
+          setReportForm((f) => ({ ...f, reason: e.target.value }))
+         }
+         className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-red-400"
+        >
+         <option value="">Select a reason...</option>
+         {REPORT_REASONS.map(({ value, label }) => (
+          <option key={value} value={value}>
+           {label}
+          </option>
+         ))}
+        </select>
+       </div>
+       <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+         Additional details <span className="text-gray-400">(optional)</span>
+        </label>
+        <textarea
+         value={reportForm.description}
+         onChange={(e) =>
+          setReportForm((f) => ({ ...f, description: e.target.value }))
+         }
+         placeholder="Describe the issue..."
+         rows={3}
+         className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-red-400 resize-none"
+        />
+       </div>
+      </div>
+
+      <div className="flex gap-3 mt-5">
+       <button
+        onClick={() => {
+         setReportModal(null);
+         setReportForm({ reason: "", description: "" });
+        }}
+        className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-700"
+       >
+        Cancel
+       </button>
+       <button
+        onClick={handleReport}
+        disabled={reportLoading || !reportForm.reason}
+        className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-sm font-semibold disabled:opacity-60 flex items-center justify-center gap-2"
+       >
+        {reportLoading ? (
+         <LoadingSpinner size="sm" />
+        ) : (
+         <>
+          <Flag size={14} /> Submit Report
+         </>
+        )}
+       </button>
+      </div>
      </div>
     </div>
    )}

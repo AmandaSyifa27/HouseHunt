@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import api from "../utils/axios";
-import { AuthContext } from "./AuthContext"; // Impor dari file .js di atas
+import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
  const [user, setUser] = useState(null);

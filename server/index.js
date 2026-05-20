@@ -20,6 +20,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/properties", require("./routes/properties"));
 app.use("/api/transactions", require("./routes/transactions"));
 app.use("/api/favorites", require("./routes/favorites"));
+app.use("/api/reports", require("./routes/reports"));
 app.use("/api/admin", require("./routes/admin"));
 app.use("/api/landlord", require("./routes/landlord"));
 

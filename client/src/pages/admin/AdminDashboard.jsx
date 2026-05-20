@@ -10,7 +10,6 @@ import {
 import api from "../../utils/axios";
 import AdminLayout from "./AdminLayout";
 import LoadingSpinner from "../../components/LoadingSpinner";
-// import { formatDate, STATUS_COLORS } from '../../utils/helpers';
 import { useToast } from "../../hooks/useToast";
 import { useNavigate } from "react-router-dom";
 
@@ -124,7 +123,6 @@ const AdminDashboard = () => {
    </div>
 
    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-    {/* Property type breakdown */}
     <div className="bg-white rounded-2xl border border-gray-100 p-5">
      <h2 className="font-semibold text-gray-900 mb-4">Property Types</h2>
      {stats?.propertyTypeBreakdown?.length > 0 ? (
@@ -179,7 +177,6 @@ const AdminDashboard = () => {
      </div>
     </div>
 
-    {/* Recent users */}
     <div className="bg-white rounded-2xl border border-gray-100 p-5">
      <div className="flex items-center justify-between mb-4">
       <h2 className="font-semibold text-gray-900">Recently Registered</h2>
@@ -214,7 +211,6 @@ const AdminDashboard = () => {
     </div>
    </div>
 
-   {/* Pending transactions */}
    <div className="bg-white rounded-2xl border border-gray-100 p-5">
     <div className="flex items-center justify-between mb-4">
      <h2 className="font-semibold text-gray-900">Pending Transactions</h2>

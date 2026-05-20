@@ -44,9 +44,6 @@ const AdminProperties = () => {
   [filterStatus, toast],
  );
 
- //  useEffect(() => {
- //   fetchData(1);
- //  }, [filterStatus]);
  useEffect(() => {
   const timer = setTimeout(() => {
    fetchData(1);
@@ -170,7 +167,7 @@ const AdminProperties = () => {
           </td>
           <td className="px-4 py-3 text-gray-600">{p.landlordId?.name}</td>
           <td className="px-4 py-3 text-gray-700 whitespace-nowrap">
-           Rp {p.price?.toLocaleString("id-ID")}
+           $ {p.price?.toLocaleString("id-ID")}
           </td>
           <td className="px-4 py-3 text-gray-600">{p.city}</td>
           <td className="px-4 py-3">
@@ -215,7 +212,6 @@ const AdminProperties = () => {
     </div>
    </div>
 
-   {/* Delete confirm modal */}
    {deleteModal && (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
      <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">

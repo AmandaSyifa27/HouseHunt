@@ -36,9 +36,6 @@ const AdminUsers = () => {
   [filter, toast],
  );
 
- //  useEffect(() => {
- //   fetchData(1);
- //  }, [filter]);
  useEffect(() => {
   const timer = setTimeout(() => {
    fetchData(1);
@@ -73,7 +70,6 @@ const AdminUsers = () => {
     </div>
    </div>
 
-   {/* Filters */}
    <div className="bg-white rounded-2xl border border-gray-100 p-4 mb-5 flex flex-wrap gap-3">
     <select
      value={filter.role}
@@ -222,7 +218,6 @@ const AdminUsers = () => {
     </div>
    </div>
 
-   {/* Confirm modal */}
    {confirmModal && (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
      <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">

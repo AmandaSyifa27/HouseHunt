@@ -33,9 +33,6 @@ const LandlordProperties = () => {
   }
  }, [toast]);
 
- //  useEffect(() => {
- //   fetchData();
- //  }, [fetchData]);
  useEffect(() => {
   const timer = setTimeout(() => {
    fetchData();
@@ -146,7 +143,7 @@ const LandlordProperties = () => {
              )}
             </div>
             <div>
-             <p className="font-medium text-gray-800 max-w-[180px] truncate">
+             <p className="font-medium text-gray-800 max-w-45 truncate">
               {p.title}
              </p>
              <p className="text-xs text-gray-400">{p.city}</p>
