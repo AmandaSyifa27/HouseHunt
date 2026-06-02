@@ -185,7 +185,7 @@ const App = () => (
       }
      />
      <Route
-      path="/profile"
+      path="/tenant/profile"
       element={
        <ProtectedRoute role="tenant">
         <TenantProfile />

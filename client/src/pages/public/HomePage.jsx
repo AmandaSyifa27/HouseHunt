@@ -303,12 +303,12 @@ const HomePage = () => {
        {
         Icon: Shield,
         title: "Verified Tenants",
-        desc: "Comprehensive Background Checks.",
+        desc: "Admin can ban users.",
        },
        {
         Icon: CreditCard,
         title: "Secured Payments",
-        desc: "Automated Rent Collection.",
+        desc: "You can check the payment proof first.",
        },
       ].map(({ Icon, title, desc }) => (
        <div
